@@ -1,4 +1,4 @@
-'''import numpy as np
+import numpy as np
 import time
 import cv2
 
@@ -30,6 +30,24 @@ ARUCO_DICT = {
     "DICT_APRILTAG_36h10": cv2.aruco.DICT_APRILTAG_36h10,
     "DICT_APRILTAG_36h11": cv2.aruco.DICT_APRILTAG_36h11
 }
+
+'''# Function to check available cameras
+def check_cameras(max_index=10):
+    index = 0
+    while index < max_index:  # Set a maximum index limit to avoid an infinite loop
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened():  # Check if the camera at this index can be opened
+            print(f"Camera with index {index} is available.")
+            cap.release()
+        else:
+            print(f"Camera with index {index} is not available.")
+        index += 1
+
+# Run the camera check for a range of possible indices
+check_cameras(20)  # Adjust the number to a higher value if needed
+'''
+
+# This ends here
 
 # Function to display detected ArUco markers on the image
 def aruco_display(corners, ids, rejected, image):
@@ -69,7 +87,7 @@ def aruco_display(corners, ids, rejected, image):
     return image
 
 # Specify the type of ArUco dictionary being used
-aruco_type = "DICT_5X5_100"
+aruco_type = "DICT_5X5_250"
 
 # Load the predefined dictionary for ArUco markers
 arucoDict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[aruco_type])
@@ -81,13 +99,18 @@ arucoParams = cv2.aruco.DetectorParameters()
 cap = cv2.VideoCapture(0)
 
 # Set the desired frame width and height for the video feed
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+cap.set(cv2.CAP_PROP_FPS, 30)
 
 # Main loop for capturing and processing video frames
 while cap.isOpened():
     
     ret, img = cap.read()  # Capture a frame from the video feed
+
+    if not ret:
+        print("Error: Failed to capture image from the camera.")
+        break
 
     h, w, _ = img.shape  # Get the height and width of the captured frame
 
@@ -113,7 +136,10 @@ while cap.isOpened():
 # Release resources and close any open windows
 cv2.destroyAllWindows()
 cap.release()
+
+
 '''
+# Detecting Aruco Markers with saved local images
 import numpy as np
 import cv2 as cv
 import os
@@ -201,4 +227,4 @@ cv.imshow("Image", detected_markers)
 cv.waitKey(0)
 
 cv.destroyAllWindows()
-
+'''
