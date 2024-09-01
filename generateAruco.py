@@ -40,6 +40,8 @@ cv2.aruco.generateImageMarker(arucoDict, id, tag_size, tag, 1)
 # Save the tag generated
 tag_name = "arucoMarkers/" + aruco_type + "_" + str(id) + ".png"
 cv2.imwrite(tag_name, tag)
+
+# Display the tag
 cv2.imshow("ArUCo Tag", tag)
 
 cv2.waitKey(0)
