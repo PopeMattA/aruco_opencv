@@ -96,9 +96,11 @@ arucoDict = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[aruco_type])
 arucoParams = cv2.aruco.DetectorParameters()
 
 # Initialize video capture with the first available camera (index 0)
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 # Set the desired frame width and height for the video feed
+cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
+
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 cap.set(cv2.CAP_PROP_FPS, 30)
@@ -112,12 +114,12 @@ while cap.isOpened():
         print("Error: Failed to capture image from the camera.")
         break
 
-    h, w, _ = img.shape  # Get the height and width of the captured frame
+    #h, w, _ = img.shape  # Get the height and width of the captured frame
 
     # Resize the image to a fixed width while maintaining the aspect ratio
-    width = 1000
-    height = int(width * (h / w))
-    img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
+    #width = 1000
+    #height = int(width * (h / w))
+    #img = cv2.resize(img, (width, height), interpolation=cv2.INTER_CUBIC)
  
     # Detect ArUco markers in the frame
     corners, ids, rejected = cv2.aruco.detectMarkers(img, arucoDict, parameters=arucoParams)
@@ -129,9 +131,7 @@ while cap.isOpened():
     cv2.imshow("Image", detected_markers)
 
     # Break the loop if the 'q' key is pressed
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord("q"):
-        break
+    cv2.waitKey(1) 
 
 # Release resources and close any open windows
 cv2.destroyAllWindows()
